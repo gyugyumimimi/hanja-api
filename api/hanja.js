@@ -66,12 +66,20 @@ const text =
   data.output?.[0]?.content?.[0]?.text ||
   "";
 
-  let parsed;
+let parsed;
+
 try {
-  const cleanText = text.replace(/```json|```/g, "").trim();
+  const cleanText = (text || "").replace(/```json|```/g, "").trim();
   parsed = JSON.parse(cleanText);
 } catch (e) {
-  parsed = { raw: text };
+  console.log("❌ JSON parse 실패:", text);
+  parsed = {
+    pinyin: "데이터 없음",
+    meaning_ko: "데이터 없음",
+    composition: "데이터 없음",
+    words: [],
+    examples: []
+  };
 }
 
     return res.status(200).json(parsed);
