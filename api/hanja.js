@@ -54,12 +54,13 @@ export default async function handler(req, res) {
   data.output_text ||
   JSON.stringify(data);
 
-    let parsed;
-    try {
-      parsed = JSON.parse(text);
-    } catch (e) {
-      parsed = { raw: text };
-    }
+  let parsed;
+try {
+  const cleanText = text.replace(/```json|```/g, "").trim();
+  parsed = JSON.parse(cleanText);
+} catch (e) {
+  parsed = { raw: text };
+}
 
     return res.status(200).json(parsed);
 
