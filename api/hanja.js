@@ -6,17 +6,17 @@ export default async function handler(req, res) {
   const { character } = req.body;
 
   try {
-const prompt = `한자 ${character}에 대해 아래 JSON 형식으로 설명해줘:
+    const prompt = `한자 ${character}에 대해 아래 JSON 형식으로 설명해줘:
 
 {
   "pinyin": "",
   "meaning_ko": "",
   "composition": "",
   "words": [
-    {"word": "", "pinyin": "", "meaning": ""}
+    { "word": "", "pinyin": "", "meaning": "" }
   ],
   "examples": [
-    {"sentence": "", "pinyin": ""}
+    { "sentence": "", "pinyin": "" }
   ]
 }`;
 
@@ -24,12 +24,12 @@ const prompt = `한자 ${character}에 대해 아래 JSON 형식으로 설명해
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         model: "gpt-5.3",
         input: prompt
-      }),
+      })
     });
 
     const data = await response.json();
@@ -38,13 +38,13 @@ const prompt = `한자 ${character}에 대해 아래 JSON 형식으로 설명해
     let parsed;
     try {
       parsed = JSON.parse(text);
-    } catch {
+    } catch (e) {
       parsed = { raw: text };
     }
 
-    return res.status(200).json(parsed);
+    res.status(200).json(parsed);
 
   } catch (error) {
-    return res.status(500).json({ error: "API 실패" });
+    res.status(500).json({ error: "Server error", detail: error.message });
   }
 }
