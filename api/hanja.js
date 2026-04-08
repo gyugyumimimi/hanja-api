@@ -61,10 +61,10 @@ const prompt = `
     });
 
     const data = await response.json();
-    const text =
-  data.output?.[0]?.content?.[0]?.text ||
+const text =
   data.output_text ||
-  JSON.stringify(data);
+  data.output?.[0]?.content?.[0]?.text ||
+  "";
 
   let parsed;
 try {
