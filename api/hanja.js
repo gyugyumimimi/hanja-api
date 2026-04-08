@@ -18,9 +18,20 @@ export default async function handler(req, res) {
   const { character } = req.body;
 
   try {
- const prompt = `
-한자 "${character}"에 대해 아래 JSON 형식으로만 답해:
+const prompt = `
+한자 "${character}"를 분석해서 반드시 모든 값을 채워 JSON으로만 출력해.
 
+조건:
+- pinyin: 반드시 실제 발음 작성
+- meaning_ko: 반드시 한국어 뜻 작성
+- composition: 부수와 의미 설명 반드시 작성
+- words: 최소 3개 단어 작성
+- examples: 최소 2개 예문 작성
+
+절대 빈 값 금지.
+설명 없이 JSON만 출력.
+
+형식:
 {
   "pinyin": "",
   "meaning_ko": "",
@@ -32,8 +43,6 @@ export default async function handler(req, res) {
     { "sentence": "", "pinyin": "" }
   ]
 }
-
-다른 말 하지 말고 JSON만 출력해.
 `;
 
     const response = await fetch("https://api.openai.com/v1/responses", {
