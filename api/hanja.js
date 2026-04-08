@@ -18,7 +18,8 @@ export default async function handler(req, res) {
   const { character } = req.body;
 
   try {
-    const prompt = `한자 ${character}에 대해 아래 JSON 형식으로 설명해줘:
+ const prompt = `
+한자 "${character}"에 대해 아래 JSON 형식으로만 답해:
 
 {
   "pinyin": "",
@@ -30,7 +31,10 @@ export default async function handler(req, res) {
   "examples": [
     { "sentence": "", "pinyin": "" }
   ]
-}`;
+}
+
+다른 말 하지 말고 JSON만 출력해.
+`;
 
     const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
