@@ -45,7 +45,10 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
-    const text = data.output?.[0]?.content?.[0]?.text || "";
+    const text =
+  data.output?.[0]?.content?.[0]?.text ||
+  data.output_text ||
+  JSON.stringify(data);
 
     let parsed;
     try {
