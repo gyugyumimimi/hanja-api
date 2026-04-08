@@ -1,4 +1,16 @@
 export default async function handler(req, res) {
+
+  // 🔥 CORS
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  // 🔥 preflight 처리
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
+  // 🔥 POST만 허용
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -42,9 +54,12 @@ export default async function handler(req, res) {
       parsed = { raw: text };
     }
 
-    res.status(200).json(parsed);
+    return res.status(200).json(parsed);
 
   } catch (error) {
-    res.status(500).json({ error: "Server error", detail: error.message });
+    return res.status(500).json({
+      error: "Server error",
+      detail: error.message
+    });
   }
 }
